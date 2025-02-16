@@ -1,7 +1,7 @@
 import math 
 #1
 a = int(input("Input degree: "))
-radian = a * (math.pi / 180)
+radian = math.radians(a)
 print(f"Output radian: {radian}")
 
 #2
