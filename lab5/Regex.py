@@ -50,3 +50,59 @@ for mat in words:
     if sequence1(mat):  
         print(mat)
 
+#5
+def matches2(s):
+    ma = r'a.*b$'
+    if re.match(ma, s):
+        return True
+    return False
+
+list5 = ["a", "aaaacb", "abc"]
+for str in list5:
+    if matches2(str):
+        print(str)
+
+#6
+def replace(s):
+    rep = r'[ .,]'
+    result = re.sub(rep, ":", s)
+    return result
+
+list6 = "Some Example with replace all occurrences."
+print(replace(list6))
+
+#7
+def convert1(s):
+    com = s.split('_')
+    camelCase = com[0] + ''.join(word.capitalize() for word in com[1:])
+    return camelCase
+
+list7 = "example_of_snake_string"
+print(convert1(list7))
+
+#8
+def splitAtUppercase(s):
+    spl = r'[A-Z][^A-Z]*'
+    result = re.findall(spl, s)
+    return result
+
+list8 = "ThisIsAStringWithUppercaseLetters"
+print(splitAtUppercase(list8))
+
+#9
+def spaces(s):
+    sp = r'[a-z][A-Z]'
+    result = re.sub(sp, r'\1 \2', s)
+    return result
+
+list9 = "ThisIsAStringWithCapitalLetters"
+print(spaces(list9))
+
+#10
+def convert2(s):
+    con = r'[a-z][A-Z]'
+    result = re.sub(con, r'\1_\2', s).lower()
+    return result
+
+list10 = "exampleOfCamelString"
+print(convert2(list10))
