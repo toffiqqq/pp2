@@ -40,3 +40,40 @@ def test_path(path):
 
 path = input("Enter a path: ")
 test_path(path)
+
+#4
+with open("file.txt", "r") as f:
+    lines = f.readline()
+    print(len(lines))
+    
+#5
+list = ['ab', 'bc', 'cd', 'de']
+with open('file.txt', 'w') as file:
+    for item in list:
+        file.write(item + '\n')
+
+#6
+import string
+def creatFiles():
+    for letter in string.ascii_uppercase:
+        with open(letter + ".txt","w") as g:
+            g.write(letter)
+creatFiles()
+
+#7
+with open("firstFile.txt",'r') as first, open('secondFile.txt','w') as second:
+    for line in first:
+        second.write(line)
+
+#8
+def remove_file(path):
+    if os.path.exists(path):
+        if os.access(path, os.W_OK):
+            os.remove(path)
+            print("File is removed succesfully")
+        else:
+            print("This file is not accesible")
+    else:
+        print(f"No, path {path} doesnt exists")
+path = input("Enter your path name: ")
+remove_file(path)
