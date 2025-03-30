@@ -37,7 +37,7 @@ def draw_coin(x, y):
 
 def show_score(score):
     score_text = font.render(f"Score: {score}", True, BLACK)
-    screen.blit(score_text, (SCREEN_WIDTH - 150, 10))
+    screen.blit(score_text, (WIDTH - 150, 10))
 
 while True:
     for event in pygame.event.get():
