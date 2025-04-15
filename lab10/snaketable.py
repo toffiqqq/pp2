@@ -8,28 +8,31 @@ pygame.init()
 # PostgreSQL database connection details
 def connect_db():
     return psycopg2.connect(
-        dbname="your_db", user="your_user", password="your_password", host="localhost"
+        dbname="snake_table", user="postgres", password="32689263", host="localhost"
     )
 
 # Create tables if they don't exist
 def create_tables():
     conn = connect_db()
     cursor = conn.cursor()
+
     cursor.execute("""
-        CREATE TABLE IF NOT EXISTS user (
+        CREATE TABLE IF NOT EXISTS "snake_user" (
             id SERIAL PRIMARY KEY,
             username VARCHAR(50) UNIQUE NOT NULL
         );
     """)
+    
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS user_score (
             id SERIAL PRIMARY KEY,
-            user_id INTEGER REFERENCES user(id),
+            user_id INTEGER REFERENCES "snake_user"(id),
             score INTEGER NOT NULL DEFAULT 0,
             level INTEGER NOT NULL DEFAULT 1,
             last_saved TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );
     """)
+    
     conn.commit()
     cursor.close()
     conn.close()
@@ -38,7 +41,7 @@ def create_tables():
 def user_exists(username):
     conn = connect_db()
     cursor = conn.cursor()
-    cursor.execute("SELECT id FROM user WHERE username = %s", (username,))
+    cursor.execute("SELECT id FROM \"snake_user\" WHERE username = %s", (username,))
     result = cursor.fetchone()
     cursor.close()
     conn.close()
@@ -48,7 +51,7 @@ def user_exists(username):
 def insert_user(username):
     conn = connect_db()
     cursor = conn.cursor()
-    cursor.execute("INSERT INTO user (username) VALUES (%s) RETURNING id", (username,))
+    cursor.execute("INSERT INTO \"snake_user\" (username) VALUES (%s) RETURNING id", (username,))
     user_id = cursor.fetchone()[0]
     cursor.execute("INSERT INTO user_score (user_id, score, level) VALUES (%s, %s, %s)", (user_id, 0, 1))
     conn.commit()
@@ -61,7 +64,7 @@ def get_user_score(username):
     cursor = conn.cursor()
     cursor.execute("""
         SELECT u.username, s.score, s.level
-        FROM user u
+        FROM "snake_user" u
         JOIN user_score s ON u.id = s.user_id
         WHERE u.username = %s
     """, (username,))
@@ -77,8 +80,8 @@ def update_user_score(username, score, level):
     cursor.execute("""
         UPDATE user_score 
         SET score = %s, level = %s, last_saved = CURRENT_TIMESTAMP
-        FROM user
-        WHERE user.username = %s AND user.id = user_score.user_id
+        FROM "snake_user"
+        WHERE "snake_user".username = %s AND "snake_user".id = user_score.user_id
     """, (score, level, username))
     conn.commit()
     cursor.close()

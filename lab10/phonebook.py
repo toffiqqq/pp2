@@ -4,7 +4,7 @@ import csv
 # Connect to the PostgreSQL database
 def connect_db():
     return psycopg2.connect(
-        dbname="your_db", user="your_user", password="your_password", host="localhost"
+        dbname="phonebook", user="postgres", password="32689263", host="localhost"
     )
 
 # Create the table
